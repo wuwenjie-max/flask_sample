@@ -1,6 +1,7 @@
 import datetime
 import decimal
 import uuid
+from flask import jsonify
 
 from flask.json import JSONEncoder as BaseJSONEncoder
 from flask_sqlalchemy import SQLAlchemy
@@ -35,3 +36,7 @@ class JSONEncoder(BaseJSONEncoder):
             # 格式化字节数据
             return o.decode("utf-8")
         return super(JSONEncoder, self).default(o)
+
+
+def response_format(status=200, message='success', data=[]):
+    return jsonify({'status': status, 'msg': message, 'data': data})
