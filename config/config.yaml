@@ -18,9 +18,11 @@ COMMON: &common #标识
 
   # redis配置
   REDIS_EXPIRE: 60*60
-  REDIS_HOST: 127.0.0.1
-  REDIS_PORT: 6379
-  REDIS_DB: 1
+  REDIS_HOST: 172.16.0.150
+  REDIS_PORT: 30960
+  REDIS_USER: ""
+  REDIS_PASS: "redispasswd"
+  REDIS_DB: 9
 
   # 是否开启定时任务,默认不开启
   SCHEDULER_OPEN: False
@@ -30,14 +32,13 @@ COMMON: &common #标识
   JOBS:
     - id: my_job
       func: app.task.task:my_job
-      trigger: cron
-      hour: 12
-      minute: 0
+      trigger: interval
+      seconds: 60
     - id: db_query
       func: app.task.task:db_query
       trigger: cron
-      hour: 12
-      minute: 10
+      hour: 14
+      minute: 47
 
 
 DEVELOPMENT: &development
