@@ -1,5 +1,6 @@
 COMMON: &common #标识
   DEBUG: False
+  ACCESS_KEY: demo
   SECRET_KEY: insecure
   # 页码设置
   DEFAULT_PAGE_INDEX: 1
@@ -48,6 +49,7 @@ COMMON: &common #标识
       hour: 14
       minute: 47
 
+  # 临时文件目录
   TMP_DIR: ./tmp
 
 

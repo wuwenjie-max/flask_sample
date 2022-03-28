@@ -3,10 +3,10 @@ FROM python:3.8-slim
 COPY requirements.txt /opt/app/requirements.txt
 RUN pip install --no-cache-dir -i https://pypi.doubanio.com/simple -r /opt/app/requirements.txt
 
-RUN  mkdir -p /flask_sample
+RUN  mkdir -p /project
 
-COPY . /flask_sample
-WORKDIR /flask_sample
+COPY . /project
+WORKDIR /project
 
 EXPOSE 5000
 

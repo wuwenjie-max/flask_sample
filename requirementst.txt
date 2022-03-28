@@ -20,3 +20,4 @@ python-redis-lock==3.7.0
 requests==2.25.1
 Flask-APScheduler==1.12.3
 flask-sqlalchemy==2.5.1
+eventlet==0.30.2

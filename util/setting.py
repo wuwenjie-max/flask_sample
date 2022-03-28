@@ -25,3 +25,7 @@ MINIO_ENDPOINT = '172.0.0.1:8000'
 MINIO_ACCESS_KEY = 'access_key'
 MINIO_SECRET_KEY = 'secret_key'
 MINIO_BUCKET_NAME = 'bucket'
+
+# secret key
+ACCESS_KEY = conf.get('ACCESS_KEY')
+SECRET_KEY = conf.get('SECRET_KEY')

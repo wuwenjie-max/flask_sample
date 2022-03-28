@@ -24,6 +24,7 @@ def create_app(config_name='development'):
 
     # 注册api
     register_api(app, router)
+    logger.info(app.url_map)
 
     # 规范输出
     app.json_encoder = JSONEncoder
