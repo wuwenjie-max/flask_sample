@@ -1,0 +1,62 @@
+version: "2.1"
+services:
+  management:
+    build:
+      context: $PWD
+      dockerfile: $PWD/Dockerfile
+    ports:
+      - "30060:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: always
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DB: clustar
+      MYSQL_USER: root
+      MYSQL_PASS: 123456
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+      REDIS_USER: ""
+      REDIS_PASS: ""
+      TZ: Asia/Shanghai
+  dashboard:
+    build:
+      context: $PWD/../sdn-dashboard
+      dockerfile: $PWD/../sdn-dashboard/dockerfile
+    ports:
+      - "30065:80"
+    depends_on:
+      management:
+        condition: service_started
+    restart: always
+  mysql:
+    image: mysql:8.0.25
+    command: --init-file /data/application/init.sql --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./db/init_table.sql:/data/application/init.sql
+    #      - ./persistence-mysql:/var/lib/mysql
+    ports:
+      - "30061:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Asia/Shanghai
+    healthcheck:
+      test: [ "CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      timeout: 20s
+      retries: 20
+  redis:
+    image: bitnami/redis:6.0.16
+    restart: always
+    ports:
+      - "30062:6379"
+    #    volumes:
+    #      - ./persistence-redis:/bitnami/redis/data
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"

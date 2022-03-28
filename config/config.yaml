@@ -8,13 +8,10 @@ COMMON: &common #标识
   # 数据库连接
   SQLALCHEMY_DATABASE_URI: 'mysql+pymysql://root:123456@localhost:3306/test?charset=utf8mb4'
   SQLALCHEMY_TRACK_MODIFICATIONS: False
-  # 日志配置文件路径
-  LOGGING_CONFIG_PATH: ./config/logging.yaml
+
   # 日志文件存放位置
   LOGGING_PATH: ./logs
-
-  # 响应消息
-  RESPONSE_MESSAGE: ./config/msg.yaml
+  LOGGING_LEVEL: 'INFO'
 
   # redis配置
   REDIS_EXPIRE: 60*60
@@ -23,6 +20,17 @@ COMMON: &common #标识
   REDIS_USER: ""
   REDIS_PASS: "redispasswd"
   REDIS_DB: 9
+
+  # celery 配置
+  USE_CELERY: False
+  CELERY_ACKS_LATE: True
+  CELERYD_PREFETCH_MULTIPLIER: 1
+  BROKER_URL: "redis://:redispasswd@172.16.0.150:30960/6"
+  CELERY_RESULT_BACKEND: "redis://:redispasswd@172.16.0.150:30960/7"
+  CELERY_TASK_SERIALIZER: 'msgpack'
+  CELERY_RESULT_SERIALIZER: 'json'
+  CELERY_TASK_RESULT_EXPIRES: 36000
+  CELERY_ACCEPT_CONTENT: ['json', 'msgpack']
 
   # 是否开启定时任务,默认不开启
   SCHEDULER_OPEN: False
@@ -39,6 +47,8 @@ COMMON: &common #标识
       trigger: cron
       hour: 14
       minute: 47
+
+  TMP_DIR: ./tmp
 
 
 DEVELOPMENT: &development

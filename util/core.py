@@ -1,11 +1,15 @@
 import datetime
 import decimal
+import os
 import uuid
-from flask import jsonify
 
+import yaml
+from flask import jsonify
 from flask.json import JSONEncoder as BaseJSONEncoder
-from flask_sqlalchemy import SQLAlchemy
 from flask_apscheduler import APScheduler
+from flask_sqlalchemy import SQLAlchemy
+
+from util.constants_utils import ResponseCode, ResponseMsg
 
 scheduler = APScheduler()
 
@@ -13,7 +17,6 @@ db = SQLAlchemy()
 
 
 class JSONEncoder(BaseJSONEncoder):
-
     def default(self, o):
         """
         如有其他的需求可直接在下面添加
@@ -38,5 +41,24 @@ class JSONEncoder(BaseJSONEncoder):
         return super(JSONEncoder, self).default(o)
 
 
-def response_format(status=200, message='success', data=[]):
-    return jsonify({'status': status, 'msg': message, 'data': data})
+def response_format(
+    code=ResponseCode.SUCCESS.value, message=ResponseMsg.SUCCESS.value, data=[]
+):
+    return jsonify({'code': code, 'msg': message, 'data': data})
+
+
+def read_yaml(config_name, config_path):
+    '''
+    :param config_name: 配置名
+    :param config_path: 配置文件路径
+    :return:
+    '''
+    if os.path.exists(config_path):
+        with open(config_path, 'r', encoding='utf-8') as file:
+            conf = yaml.safe_load(file.read())
+            if config_name.upper() in conf.keys():
+                return conf[config_name.upper()]
+            else:
+                raise KeyError("config_name not found, please check it")
+    else:
+        raise KeyError('config path not found, {}'.format(config_path))

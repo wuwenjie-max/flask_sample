@@ -7,7 +7,3 @@ class User(db.Model):
     name = db.Column(db.String(20), nullable=False)
     phone = db.Column(db.String(20), default="")
     password = db.Column(db.String(20), nullable=False)
-
-
-
-

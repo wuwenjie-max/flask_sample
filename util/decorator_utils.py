@@ -1,7 +1,8 @@
 from functools import wraps
-from loguru import logger
 
+from util.constants_utils import ResponseCode
 from util.core import response_format
+from util.log_utils import sys_logger
 
 
 def exception(func):
@@ -10,10 +11,8 @@ def exception(func):
         try:
             res = func(*args, **kwargs)
         except Exception as e:
-            logger.error(str(e))
-            return response_format(status=0, message=str(e))
+            sys_logger.exception(e)
+            return response_format(code=ResponseCode.ERROR.value, message=str(e))
         return res
+
     return inner
-
-
-

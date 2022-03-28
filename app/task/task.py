@@ -1,12 +1,15 @@
-from loguru import logger
 import datetime
 
-from util.core import db
+from loguru import logger
+
 from app.models.models import User
+from util.core import db
+
 
 def my_job():
     curr = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     logger.info('curr time: {}, my job success'.format(curr))
+
 
 def db_query():
     with db.app.app_context():
