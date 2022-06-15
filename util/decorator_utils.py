@@ -16,3 +16,20 @@ def exception(func):
         return res
 
     return inner
+
+def retry(numbers):
+    def decorator(func):
+        @wraps(func)
+        def inner(*args, **kwargs):
+            for num in range(numbers):
+                try:
+                    result = func(*args, **kwargs)
+                except Exception as e:
+                    print('retry time: {}'.format(str(num)))
+                    continue
+                return result
+            raise IndexError('try max retry times')
+        return inner
+    return decorator
+
+
